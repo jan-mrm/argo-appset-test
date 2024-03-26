@@ -1,0 +1,30 @@
+application-appdeployment:
+  image:
+    repository: crglobalacc000.azurecr.io/example-rest-provider
+    pullPolicy: Always
+    tag: latest
+  ingress:
+    enabled: false
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+    - name: actuator
+      containerPort: 8081
+      protocol: TCP
+  startupProbe:
+    httpGet:
+      path: /actuator/health/liveness
+      port: actuator
+    initialDelaySeconds: 20
+  livenessProbe:
+    httpGet:
+      path: /actuator/health/liveness
+      port: actuator
+    initialDelaySeconds: 20
+  readinessProbe:
+    httpGet:
+      path: /actuator/health/readiness
+      port: actuator
+    initialDelaySeconds: 20
+
